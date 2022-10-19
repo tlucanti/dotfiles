@@ -1,0 +1,17 @@
+
+-R
+--exclude=.git
+--exclude=.config
+--exclude=build
+--exclude=log
+--exclude=*.sh
+--exclude=*.swp
+--exclude=*.o
+--exclude=*.gch
+--exclude=.idea
+--exclude=cmake-build-debug
+--exclude=*.txt
+--exclude=*.json
+--exclude=*.yml
+--exclude=*.out
+
