@@ -116,11 +116,6 @@ ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 
 cntlm -c $HOME/.cntlm.conf
 
-export http_proxy=http://10.123.68.107:6666
-export https_proxy=http://10.123.68.107:6666
-export HTTP_PROXY=http://10.123.68.107:6666
-export HTTPS_PROXY=http://10.123.68.107:6666
-
 alias gs='git status '
 alias gc='git commit -m '
 alias mk='make 2>&1 >/dev/null | less -R '
@@ -136,3 +131,6 @@ vf() {
     vim $(find . -name $@)
 }
 
+gps() {
+    find . -type f -name "*$2" ! -name '*.swp' -exec grep -Hn "$1" --color=always {} \;
+}

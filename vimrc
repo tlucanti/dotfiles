@@ -67,6 +67,7 @@ call plug#begin('~/.vim/bundle')
 	Plug 'vim-python/python-syntax'
 	Plug 'joshdick/onedark.vim'
 	Plug 'haishanh/night-owl.vim'
+    Plug 'tribela/vim-transparent'
 call plug#end()
 " Перестать это делать
 
