@@ -5,4 +5,5 @@ cp ~/.ctags ctags
 cp ~/astyle-linux .
 cp ~/.gdbinit gdbinit
 cp ~/.lldbinit lldbinit
+cp ~/.pdbrc pdbrc
 

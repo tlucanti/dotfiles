@@ -14,4 +14,8 @@
 --exclude=*.json
 --exclude=*.yml
 --exclude=*.out
+--exclude=*.elf
+--exclude=*tags
+--exclude=*.d
+
 

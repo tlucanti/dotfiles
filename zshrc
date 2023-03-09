@@ -113,12 +113,12 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='bold'
 ZSH_HIGHLIGHT_STYLES[redirection]='fg=yellow,bold'
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 
-
-cntlm -c $HOME/.cntlm.conf
-
 alias gs='git status '
 alias gc='git commit -m '
 alias mk='make 2>&1 >/dev/null | less -R '
+alias m='make'
+alias mc='make clean'
+alias re='make clean && make'
 alias v='vim '
 alias cd..='cd .. '
 alias cd...='cd ... '
@@ -130,7 +130,6 @@ alias ast="astyle --options=${HOME}/astyle-linux "
 vf() {
     vim $(find . -name $@)
 }
-
 gps() {
-    find . -type f -name "*$2" ! -name '*.swp' -exec grep -Hn "$1" --color=always {} \;
+    find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
 }

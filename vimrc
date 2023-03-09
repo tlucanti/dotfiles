@@ -12,7 +12,6 @@ set smarttab                " auto set tabs at the begining of line
 set softtabstop=4           " size of tab when deleting
 set shiftwidth=4            " size of tab in spaces
 set number                  " set absolute line numbering
-"set relativenumber         " set relative line numbering
 "set foldcolumn=2           " extra space indent in the left
 set mouse=a                 " enable full mouse support
 set ignorecase              " ignoring case in search
@@ -60,21 +59,55 @@ call plug#begin('~/.vim/bundle')
 	Plug 'ErichDonGubler/vim-sublime-monokai'
 	Plug 'octol/vim-cpp-enhanced-highlight'
 	Plug 'preservim/nerdtree'
-	Plug 'frazrepo/vim-rainbow'
+    " Plug 'frazrepo/vim-rainbow'
+    Plug 'luochen1990/rainbow'
 	Plug 'Yggdroot/indentLine'
 	" Plug 'lukas-reineke/virt-column.nvim'
 	Plug 'raimondi/delimitmate'
 	Plug 'vim-python/python-syntax'
 	Plug 'joshdick/onedark.vim'
 	Plug 'haishanh/night-owl.vim'
-    Plug 'tribela/vim-transparent'
 call plug#end()
 " Перестать это делать
 
 " vim rainbow settings
-let g:rainbow_active = 1
-au FileType c,cpp,py,sh,vimrc,zshrc call rainbow#load()
-let g:rainbow_ctermfgs = ['lightblue', 'red', 'lightgreen', 'yellow', 'magenta']
+" let g:rainbow_active = 1
+" au FileType c,cpp,py,sh,vimrc,zshrc call rainbow#load()
+" let g:rainbow_ctermfgs = ['lightblue', 'red', 'lightgreen', 'yellow', 'magenta']
+
+" vim rainbow parentheses improved settings
+ let g:rainbow_active = 1
+let g:rainbow_conf = {
+\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\	'guis': [''],
+\	'cterms': [''],
+\	'operators': '_,\|<\|>\|+\|-\|*\|=\|!\|?\|:\|;\|&\||\|@\|%\|\^\|\.\|\~_',
+\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\	'separately': {
+\		'*': {},
+\		'markdown': {
+\			'parentheses_options': 'containedin=markdownCode contained',
+\		},
+\		'lisp': {
+\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+\		},
+\		'haskell': {
+\			'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/\v\{\ze[^-]/ end=/}/ fold'],
+\		},
+\		'vim': {
+\			'parentheses_options': 'containedin=vimFuncBody',
+\		},
+\		'perl': {
+\			'syn_name_prefix': 'perlBlockFoldRainbow',
+\		},
+\		'stylus': {
+\			'parentheses': ['start=/{/ end=/}/ fold contains=@colorableGroup'],
+\		},
+\		'css': 0,
+\		'nerdtree': 0,
+\	}
+\}
 
 " IndentLinw settings
 let g:indentLine_enabled = 1
@@ -104,18 +137,24 @@ let NERDTreeMapOpenInTab='<ENTER>'
 " colorscheme settings
 set termguicolors
 colorscheme night-owl
-hi Normal guibg=NONE ctermbg=NONE
+"hi Normal guibg=NONE ctermbg=NONE
+hi Normal guibg=#081535
 "disabling colorscheme bg color (to transparent)
 set cursorline
 set cursorcolumn
 hi CursorLine guibg=#203050
-hi CursorColumn guibg=#102030
+hi CursorColumn guibg=#202540
 hi ColorColumn guibg=#203050
 
-set path=
+set path+=/usr/local/include
+set path+=~/git/hm-gear
 set path+=~/git/hm-gear/include
 set path+=~/git/hm-gear/ibr
 set path+=~/git/hm-gear/benchmark/slist
 set path+=~/git/hm-gear/lib/container/include
 set path+=~/git/hm-gear/benchmark
 set path+=~/git/hm-gear/buildsystem
+set path+=~/git/hm-gear/lib
+set path+=~/git/hm-gear/lib/benchmark_container/include
+set path+=~/git/hm-libvsync/sync/include/vsync
+
