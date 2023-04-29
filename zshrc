@@ -127,6 +127,7 @@ alias cd-='cd - '
 alias gl='git log --oneline '
 alias gla='git log --oneline --all --graph '
 alias ast="astyle --options=${HOME}/astyle-linux "
+alias ctags="/usr/local/bin/ctags --options=$HOME/.ctags "
 
 vf() {
     vim $(find . -name $@)

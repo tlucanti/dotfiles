@@ -5,13 +5,14 @@ filetype plugin indent on
 set encoding=utf-8          " set encoding to utf-8
 set nocompatible            " turns of compatibility with Vi
 syntax enable               " turns on syntax highlightning
-set tabstop=4               " size of tab in characters
-set expandtab               " replace tabs with spaces
-"set noexpandtab            " dont repace tabs with spaces
+set tabstop=8               " size of tab in characters
+"set expandtab               " replace tabs with spaces
+set noexpandtab            " dont repace tabs with spaces
 set smarttab                " auto set tabs at the begining of line
-set softtabstop=4           " size of tab when deleting
-set shiftwidth=4            " size of tab in spaces
-set number                  " set absolute line numbering
+set softtabstop=8           " size of tab when deleting
+set shiftwidth=8            " size of tab in spaces
+"set number                  " set absolute line numbering
+set relativenumber          " set realative line numbering
 "set foldcolumn=2           " extra space indent in the left
 set mouse=a                 " enable full mouse support
 set ignorecase              " ignoring case in search
