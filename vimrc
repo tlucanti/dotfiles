@@ -158,3 +158,4 @@ set path+=~/git/hm-gear/lib
 set path+=~/git/hm-gear/lib/benchmark_container/include
 set path+=~/git/hm-libvsync/sync/include/vsync
 
+tab all
