@@ -116,7 +116,8 @@ ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 
 alias gs='git status '
 alias gc='git commit -m '
-alias mk='make 2>&1 >/dev/null | less -R '
+alias gr='git reset '
+alias mk='make -j 8 2>&1 >/dev/null | less -R '
 alias m='make'
 alias mc='make clean'
 alias re='make clean && make'
@@ -127,7 +128,7 @@ alias cd-='cd - '
 alias gl='git log --oneline '
 alias gla='git log --oneline --all --graph '
 alias ast="astyle --options=${HOME}/astyle-linux "
-alias ctags="/usr/local/bin/ctags --options=$HOME/.ctags "
+alias clr=clear
 
 vf() {
     vim $(find . -name $@)

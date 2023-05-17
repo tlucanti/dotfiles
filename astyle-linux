@@ -19,5 +19,4 @@ align-pointer=name
 break-one-line-headers
 keep-one-line-blocks
 keep-one-line-statements
-# convert-tabs
-
+convert-tabs
