@@ -20,3 +20,5 @@ cp lldbinit ~/.lldbinit
 cp ~/.pdbrc ./pdbrc.backup 2> /dev/null
 cp pdbrc ~/.pdbrc
 
+cp lldbinit.py ~/lldbinit.py
+
