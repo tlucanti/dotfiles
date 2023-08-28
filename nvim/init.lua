@@ -21,20 +21,20 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
 {
 	-- (dependency) lua utils
-	'nvim-lua/plenary.nvim',		
+	'nvim-lua/plenary.nvim',
 }, {
 	-- (dependency) lsp utils
-	'williamboman/mason.nvim',	
+	'williamboman/mason.nvim',
 
 	config = function()
-		require('mason').setup()	
+		require('mason').setup()
 	end,
 }, {
 	-- (dependency) ui utils
-	'MunifTanjim/nui.nvim',			
+	'MunifTanjim/nui.nvim',
 }, {
 	-- (dependency) icons
-	'nvim-tree/nvim-web-devicons',		
+	'nvim-tree/nvim-web-devicons',
 },
 
 {
@@ -42,10 +42,10 @@ local plugins = {
 	'nvim-telescope/telescope.nvim',
 }, {
 	-- (core plugin) notifications
-	'rcarriga/nvim-notify',			
+	'rcarriga/nvim-notify',
 }, {
 	-- (core plugin) ui
-	'folke/noice.nvim',		
+	'folke/noice.nvim',
 },
 
 'echasnovski/mini.surround',
@@ -54,6 +54,12 @@ local plugins = {
 'ggandor/leap.nvim',
 'rhysd/vim-clang-format',
 'nvim-lualine/lualine.nvim',
+{
+	'miyakogi/conoline.vim',
+
+	config = function()
+	end,
+},
 
 'neovim/nvim-lspconfig',
 'L3MON4D3/LuaSnip',
@@ -69,10 +75,13 @@ local plugins = {
 					require('luasnip').lsp_expand(args.body)
 	 			end,
 			},
-			mapping = {
-				 ['<C-e>'] = cmp.mapping.abort(),
-				 ['<s-Tab>'] = cmp.mapping.select_prev_item(),
-				 ['<Tab>'] = cmp.mapping.select_next_item(),
+			mapping = cmp.mapping{
+				['<C-e>'] = cmp.mapping.abort(),
+				['<s-Tab>'] = cmp.mapping.select_prev_item(),
+				['<Tab>'] = cmp.mapping.select_next_item(),
+				 -- ['<Down>'] = cmp.mapping.close(),
+				 --  ['<Up>'] = cmp.mapping.close(),
+				 -- ['<CR'] = cmp.mapping.select_next_item(),
 			},
 			sources = {
 				{ name = 'nvim_lsp' },
@@ -86,10 +95,11 @@ local plugins = {
 'hrsh7th/cmp-buffer',
 'amarakon/nvim-cmp-buffer-lines',
 'hrsh7th/cmp-calc',
-'uga-rosa/cmp-dictionary', 
-'hrsh7th/cmp-omni', 
+'uga-rosa/cmp-dictionary',
+'hrsh7th/cmp-omni',
 'hrsh7th/cmp-nvim-lsp',
 'nvim-treesitter/nvim-treesitter-textobjects',
+'wsdjeg/vim-fetch',
 
 {
 	'nvim-treesitter/nvim-treesitter',
@@ -133,7 +143,7 @@ local plugins = {
 	 'oxfist/night-owl.nvim',
 	 lazy = false,
 	 priority = 1000,
-	 config = function()               
+	 config = function()
 		vim.cmd.colorscheme('night-owl')
 	 end,
 }, {
@@ -160,7 +170,7 @@ local plugins = {
 		        },
 		    }
 		},
-		
+
 		{
 		    -- Autocompletion
 		    'hrsh7th/nvim-cmp',
@@ -180,7 +190,7 @@ local plugins = {
 		        }
 		    }
 		},
-		
+
 		'stevearc/dressing.nvim',
 		'j-hui/fidget.nvim',
 		'folke/neodev.nvim',
@@ -204,6 +214,7 @@ require('bufferline').setup()
 require('notify').setup({
 	--background_colour='#000',
 })
+
 
 require('leap').add_default_mappings(true)
 
@@ -238,6 +249,7 @@ local signs = { error = '🌊', warn = '🧠', hint = '💡', info = ' ' }
 local signs = { error = '🌊', warn = '🧠', hint = '', info = ' ' }
 local signs = { error = '🧠', warn = '🚱', hint = '', info = ' ' }
 local signs = { error = '🧠', warn = '🪚', hint = '', info = ' ' }
+local signs = {}
 
 local lsp = require('lsp-zero')
 
@@ -255,7 +267,7 @@ lsp.set_server_config({
     }
 })
 
-lsp.set_sign_icons(signs)
+ lsp.set_sign_icons(signs)
 local _border = 'single'
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
   vim.lsp.handlers.hover, {
@@ -267,10 +279,11 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
     border = _border
   }
 )
-vim.diagnostic.config {
-    virtual_text = false,
-    float={border=_border}
-}
+--vim.diagnostic.config {
+--    virtual_text = false,
+--    float={border=_border}
+--}
+vim.diagnostic.disable()
 
 lsp.on_attach(function(client, bufnr)
     local map = function(modes, keys, func, desc)
@@ -333,9 +346,15 @@ lsp.on_attach(function(client, bufnr)
     }, bufnr)
 end)
 
-lsp.extend_cmp()
+-- lsp.extend_cmp()
 
 -- vim opt
 vim.opt.termguicolors = true
 vim.opt.relativenumber = true
+vim.opt.number = true
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
 
