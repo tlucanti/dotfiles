@@ -100,6 +100,25 @@ local plugins = {
 'hrsh7th/cmp-nvim-lsp',
 'nvim-treesitter/nvim-treesitter-textobjects',
 'wsdjeg/vim-fetch',
+'nvim-telescope/telescope-symbols.nvim',
+'luochen1990/rainbow',
+'tpope/vim-fugitive',
+
+{
+	'HiPhish/nvim-ts-rainbow2',
+	config = function()
+		vim.cmd
+		[[
+		highlight TSRainbowBlue guifg=#3333ff ctermfg=Blue
+		highlight TSRainbowYellow guifg=#ffff00 ctermfg=Yellow
+		highlight TSRainbowGreen guifg=#00ff00 ctermfg=Green
+		highlight TSRainbowRed guifg=#ff5522 ctermfg=Red
+		highlight TSRainbowCyan guifg=#00ffff ctermfg=Cyan
+		highlight TSRainbowViolet guifg=#ff00ff ctermfg=Magenta
+
+		]]
+	end
+},
 
 {
 	'nvim-treesitter/nvim-treesitter',
@@ -208,6 +227,27 @@ local plugins = {
 local opts = {}
 
 require('lazy').setup(plugins, opts)
+
+-- require("nvim-treesitter.configs").setup {
+--     rainbow = {
+--     enable = true,
+--     -- list of languages you want to disable the plugin for
+--     disable = { 'jsx', 'cpp' },
+--     -- Which query to use for finding delimiters
+--     query = 'rainbow-parens',
+--     -- Highlight the entire buffer all at once
+--     strategy = require('ts-rainbow').strategy.global,
+--     hlgroups = {
+--        'TSRainbowBlue',
+--        'TSRainbowYellow',
+--        'TSRainbowGreen',
+--        -- 'TSRainbowRed',
+--        'TSRainbowCyan',
+--        'TSRainbowViolet',
+--     },
+--   }
+-- }
+			--'blue', 'yellow', 'cyan', 'magenta',
 
 require('bufferline').setup()
 
@@ -357,4 +397,18 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*" },
   command = [[%s/\s\+$//e]],
 })
+
+vim.api.nvim_set_keymap('i', '<S-Up>', '<ESC><S-v>k', {})
+vim.api.nvim_set_keymap('n', '<S-Up>', '<S-v>k', {})
+vim.api.nvim_set_keymap('v', '<S-Up>', 'k', {})
+vim.api.nvim_set_keymap('i', '<S-Down>', '<ESC><S-v>j', {})
+vim.api.nvim_set_keymap('n', '<S-Down>', '<S-v>j', {})
+vim.api.nvim_set_keymap('v', '<S-Down>', 'j', {})
+
+vim.api.nvim_set_keymap('i', '<C-Up>', '<ESC><C-v>k', {})
+vim.api.nvim_set_keymap('n', '<C-Up>', '<C-v>k', {})
+vim.api.nvim_set_keymap('i', '<C-Down>', '<ESC><C-v>j', {})
+vim.api.nvim_set_keymap('n', '<C-Down>', '<C-v>j', {})
+
+vim.api.nvim_set_keymap('v', '<leader>f', '<Nop>', { desc = 'run clang-format' })
 

@@ -3,7 +3,7 @@ rm -rf ~/.local/share/nvim/
 rm -rf ~/.local/state/nvim/
 rm -rf ~/.cache/nvim/
 
-mkdir ~/.config/nvim
+mkdir -p ~/.config/nvim
 cp ./init.lua ~/.config/nvim/
 
 echo "INSTALL python3.10-venv"
