@@ -117,6 +117,7 @@ ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 alias gs='git status '
 alias gc='git commit -m '
 alias gr='git reset '
+alias gw='git switch'
 alias mk='make -j 8 2>&1 >/dev/null | less -R '
 alias m='make'
 alias mc='make clean'
@@ -136,3 +137,12 @@ vf() {
 gps() {
     find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
 }
+moveall() {
+    for f in $(ls -a)
+    do
+        if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
+            echo moving $f to $1
+	fi
+    done
+}
+export PATH="/usr/lib/ccache:$PATH"
