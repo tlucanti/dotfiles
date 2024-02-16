@@ -1,4 +1,6 @@
 
+vim.opt.termguicolors = true
+
 -------------------------------------------------------------------------------
 -- bootstrap lazy vim
 
@@ -151,21 +153,22 @@ local plugins = {
 	end
 },
 
-	-- {
-	-- 	'folke/tokyonight.nvim',
-	-- 	lazy = false,
-	-- 	priority = 1000,
-	-- 	opts = {},
-	-- },
+--	 {
+--	 	'folke/tokyonight.nvim',
+--	 	lazy = false,
+--	 	priority = 1000,
+--	 	opts = {},
+--	 },
 
+ {
+ 	 'oxfist/night-owl.nvim',
+ 	 lazy = false,
+ 	 priority = 1000,
+ 	 config = function()
+ 		vim.cmd.colorscheme('night-owl')
+ 	 end,
+ },
 {
-	 'oxfist/night-owl.nvim',
-	 lazy = false,
-	 priority = 1000,
-	 config = function()
-		vim.cmd.colorscheme('night-owl')
-	 end,
-}, {
         'VonHeikemen/lsp-zero.nvim',
         lazy = false,
         branch = 'v2.x',
@@ -319,11 +322,11 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
     border = _border
   }
 )
---vim.diagnostic.config {
---    virtual_text = false,
---    float={border=_border}
---}
-vim.diagnostic.disable()
+vim.diagnostic.config {
+    virtual_text = false,
+    float={border=_border}
+}
+--vim.diagnostic.disable()
 
 lsp.on_attach(function(client, bufnr)
     local map = function(modes, keys, func, desc)
@@ -347,25 +350,26 @@ lsp.on_attach(function(client, bufnr)
     nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', '[G]oto [D]eclaration')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
     nmap('gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', '[G]oto [I]mplementation')
-    nmap('go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
+    -- nmap('go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
     -- nmap('gr', '<cmd>lua vim.lsp.buf.references()<cr>', '[G]oto [R]eferences')
     nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    nmap('<C-u>', require('telescope.builtin').lsp_references, '[G]oto [U]usages')
     nmap('gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
     -- nmap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', '[R]e[n]ame')
     nmap('<leader>rn', require('renamer').rename, '[R]e[n]ame')
-    map({'n', 'x'}, '<leader>f', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
-    map({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
+    -- map({'n', 'x'}, '<leader>f', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
+    -- map({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
     nmap('<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', '[C]ode [A]ction')
     nmap('<leader>q', vim.diagnostic.setloclist, 'Open Diagnostics List')
 
-    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    nmap('<leader>s', require('telescope.builtin').lsp_document_symbols, 'file [S]ymbols')
+    nmap('<leader>sa', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[S]ymbols [A]ll')
 
-    nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-    nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-    nmap('<leader>wl', function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, '[W]orkspace [L]ist Folders')
+    -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+    -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+    -- nmap('<leader>wl', function()
+    --    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    -- end, '[W]orkspace [L]ist Folders')
 
     nmap('<leader>e', '<cmd>lua vim.diagnostic.open_float()<cr>', 'Show [E]rror Floating Window')
     nmap('[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', 'Previous [D]iagnostics')
@@ -389,7 +393,6 @@ end)
 -- lsp.extend_cmp()
 
 -- vim opt
-vim.opt.termguicolors = true
 vim.opt.relativenumber = true
 vim.opt.number = true
 
@@ -410,5 +413,7 @@ vim.api.nvim_set_keymap('n', '<C-Up>', '<C-v>k', {})
 vim.api.nvim_set_keymap('i', '<C-Down>', '<ESC><C-v>j', {})
 vim.api.nvim_set_keymap('n', '<C-Down>', '<C-v>j', {})
 
-vim.api.nvim_set_keymap('v', '<leader>f', '<Nop>', { desc = 'run clang-format' })
+vim.keymap.set('n', '<leader>f', require('telescope.builtin').find_files, {})
+vim.keymap.set('n', '<leader>g', require('telescope.builtin').live_grep, {})
+vim.keymap.set('n', '<leader>c', require('telescope.builtin').resume, {})
 
