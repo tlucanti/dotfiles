@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=~/.local/bin:$PATH
+export PATH=/usr/lib/ccache/:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -114,35 +114,45 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='bold'
 ZSH_HIGHLIGHT_STYLES[redirection]='fg=yellow,bold'
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 
-alias gs='git status '
-alias gc='git commit -m '
-alias gr='git reset '
+alias gs='git status'
+alias gc='git commit --signoff -m'
+alias gr='git reset'
 alias gw='git switch'
-alias mk='make -j 8 2>&1 >/dev/null | less -R '
+alias mk='make -j8 2>&1 >/dev/null | less -R'
 alias m='make'
 alias mc='make clean'
-alias re='make clean && make'
-alias v='vim '
-alias cd..='cd .. '
-alias cd...='cd ... '
-alias cd-='cd - '
-alias gl='git log --oneline '
-alias gla='git log --oneline --all --graph '
-alias ast="astyle --options=${HOME}/astyle-linux "
+alias re='make clean && rm -rf build && make -j8'
+alias v='nvim'
+alias cd..='cd ..'
+alias cd...='cd ...'
+alias cd-='cd -'
+alias gl='git log --oneline --first-parent'
+alias gla='git log --oneline --all --graph'
+alias ast="astyle --options=${HOME}/astyle-linux"
 alias clr=clear
 
+echo "Signed-off-by: $(git config user.name) $(git config user.email)" > ~/.gitmessage.txt
+git config --global commit.template ~/.gitmessage.txt
+git config --global commit.gpgsign true
+git config --global gpg.program gpg
+
 vf() {
-    vim $(find . -name $@)
+    nvim $(find . -name $@)
 }
+
 gps() {
     find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
 }
+
 moveall() {
     for f in $(ls -a)
     do
         if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
             echo moving $f to $1
-	fi
+	    mv $f $1
+    fi
     done
 }
-export PATH="/usr/lib/ccache:$PATH"
+
+cntlm -c $HOME/.cntlm.conf
+
