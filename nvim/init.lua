@@ -56,12 +56,6 @@ local plugins = {
 'ggandor/leap.nvim',
 'rhysd/vim-clang-format',
 'nvim-lualine/lualine.nvim',
-{
-	'miyakogi/conoline.vim',
-
-	config = function()
-	end,
-},
 
 'neovim/nvim-lspconfig',
 'L3MON4D3/LuaSnip',
@@ -159,15 +153,20 @@ local plugins = {
 --	 	priority = 1000,
 --	 	opts = {},
 --	 },
-
- {
- 	 'oxfist/night-owl.nvim',
- 	 lazy = false,
- 	 priority = 1000,
- 	 config = function()
- 		vim.cmd.colorscheme('night-owl')
- 	 end,
- },
+-- {
+--   "Skullamortis/forest.nvim",
+--   lazy = false,
+--   priority = 1000,
+--   opts = {},
+-- },
+{
+	 'oxfist/night-owl.nvim',
+	 lazy = false,
+	 priority = 1000,
+	 config = function()
+		vim.cmd.colorscheme('night-owl')
+	 end,
+},
 {
         'VonHeikemen/lsp-zero.nvim',
         lazy = false,
@@ -225,7 +224,24 @@ local plugins = {
 	'akinsho/bufferline.nvim',
 	-- 'folke/edgy.nvim',
 	-- 'RRethy/vim-illuminate',
-}
+{
+     'lewis6991/gitsigns.nvim',
+     opts = {
+         signs = {
+             add = { text = '+' },
+             change = { text = '~' },
+             delete = { text = '_' },
+             topdelete = { text = ' ' },
+             changedelete = { text = '~' },
+         },
+         on_attach = function(bufnr)
+             vim.keymap.set('n', '<leader>hp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = 'go to [P]revious [H]unk' })
+             vim.keymap.set('n', '<leader>hn', require('gitsigns').next_hunk, { buffer = bufnr, desc = 'go to [N]ext [H]unk' })
+             -- vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+         end,
+     },
+},
+} -- end plugin list
 
 local opts = {}
 
@@ -353,17 +369,17 @@ lsp.on_attach(function(client, bufnr)
     -- nmap('go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
     -- nmap('gr', '<cmd>lua vim.lsp.buf.references()<cr>', '[G]oto [R]eferences')
     nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    nmap('<C-u>', require('telescope.builtin').lsp_references, '[G]oto [U]usages')
     nmap('gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
     -- nmap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', '[R]e[n]ame')
-    nmap('<leader>rn', require('renamer').rename, '[R]e[n]ame')
+     -- nmap('<leader>rn', require('renamer').rename, '[R]e[n]ame')
     -- map({'n', 'x'}, '<leader>f', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
     -- map({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
     nmap('<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', '[C]ode [A]ction')
     nmap('<leader>q', vim.diagnostic.setloclist, 'Open Diagnostics List')
 
     nmap('<leader>s', require('telescope.builtin').lsp_document_symbols, 'file [S]ymbols')
-    nmap('<leader>sa', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[S]ymbols [A]ll')
+    nmap('<leader>S', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'all [S]ymbols')
+    nmap('<leader>u', require('telescope.builtin').lsp_references, '[G]oto [U]usages')
 
     -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
     -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
@@ -415,5 +431,15 @@ vim.api.nvim_set_keymap('n', '<C-Down>', '<C-v>j', {})
 
 vim.keymap.set('n', '<leader>f', require('telescope.builtin').find_files, {})
 vim.keymap.set('n', '<leader>g', require('telescope.builtin').live_grep, {})
+vim.keymap.set('n', '<leader>r', require('telescope.builtin').resume, {})
 vim.keymap.set('n', '<leader>c', require('telescope.builtin').resume, {})
+
+vim.cmd("highlight! GitSignsAdd guifg='#007700'")
+vim.cmd("highlight! GitSignsChange guifg='#ffff00'")
+vim.cmd("highlight! GitSignsDelete guifg='#ff0000'")
+
+vim.cmd("highlight! CursorLine guibg='#103040'")
+vim.cmd("highlight! CursorColumn guibg='#102030'")
+vim.opt.cursorline = true
+vim.opt.cursorcolumn = true
 
