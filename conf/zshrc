@@ -154,5 +154,3 @@ moveall() {
     done
 }
 
-cntlm -c $HOME/.cntlm.conf
-
