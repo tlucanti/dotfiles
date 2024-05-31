@@ -135,6 +135,7 @@ echo "Signed-off-by: $(git config user.name) $(git config user.email)" > ~/.gitm
 git config --global commit.template ~/.gitmessage.txt
 git config --global commit.gpgsign true
 git config --global gpg.program gpg
+git config --global core.editor nvim
 
 vf() {
     nvim $(find . -name $@)
