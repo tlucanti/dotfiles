@@ -114,6 +114,7 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='bold'
 ZSH_HIGHLIGHT_STYLES[redirection]='fg=yellow,bold'
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 
+alias make='make -erRS --warn-undefined-variables '
 alias gs='git status'
 alias gc='git commit --signoff -m'
 alias gr='git reset'
