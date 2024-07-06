@@ -99,6 +99,7 @@ local plugins = {
 'nvim-telescope/telescope-symbols.nvim',
 'luochen1990/rainbow',
 'tpope/vim-fugitive',
+'sakhnik/nvim-gdb',
 
 {
 	'HiPhish/nvim-ts-rainbow2',
@@ -434,12 +435,14 @@ vim.keymap.set('n', '<leader>g', require('telescope.builtin').live_grep, {})
 vim.keymap.set('n', '<leader>r', require('telescope.builtin').resume, {})
 vim.keymap.set('n', '<leader>c', require('telescope.builtin').resume, {})
 
+vim.keymap.set('n', '<C-n>', function() vim.cmd('GdbNext') end)
+
 vim.cmd("highlight! GitSignsAdd guifg='#007700'")
 vim.cmd("highlight! GitSignsChange guifg='#ffff00'")
 vim.cmd("highlight! GitSignsDelete guifg='#ff0000'")
 
-vim.cmd("highlight! CursorLine guibg='#103040'")
-vim.cmd("highlight! CursorColumn guibg='#102030'")
+vim.cmd("highlight! CursorLine guibg='#253545'")
+vim.cmd("highlight! CursorColumn guibg='#192940'")
+vim.cmd("highlight! Visual guibg='#353560'")
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
-

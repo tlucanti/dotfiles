@@ -128,7 +128,7 @@ alias cd..='cd ..'
 alias cd...='cd ...'
 alias cd-='cd -'
 alias gl='git log --oneline --first-parent'
-alias gla='git log --oneline --all --graph'
+alias gla='git log --oneline --all --graph -n 1000'
 alias ast="astyle --options=${HOME}/astyle-linux"
 alias clr=clear
 
