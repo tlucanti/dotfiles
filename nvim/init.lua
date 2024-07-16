@@ -446,3 +446,164 @@ vim.cmd("highlight! CursorColumn guibg='#192940'")
 vim.cmd("highlight! Visual guibg='#353560'")
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
+
+local term_bg_blue_1 = '#0f0c29'
+local term_bg_blue_2 = '#302b63'
+local term_bg_blue_3 = '#24243e'
+
+vim.cmd("highlight TelescopeSelection   guibg=" .. term_bg_blue_2)
+vim.cmd("highlight TelescopePreviewLine guibg=" .. term_bg_blue_1)
+vim.cmd("highlight PmenuSel             guibg=" .. term_bg_blue_1)
+vim.cmd("highlight LazyButtonActive     guibg=" .. term_bg_blue_1)
+
+local transparent_elements =
+{
+    'BufferLineTabClose', 'BufferLineCloseButtonSelected', 'BufferLineCloseButton', 'BufferLineModified', 'BufferLineModifiedSelected', 'BufferLineModifiedVisible',
+
+    'NormalFloat', 'NormalNC', 'SignColumnSB', 'NormalSB',
+
+    'WhichKeyFloat', -- WhichKey plugin
+
+    'LspFloatWinBorder', 'LspFloatWinNormal', 'LspTroubleNormal', -- LSP
+
+    'Pmenu', 'PmenuSbar', 'PmenuThumb', 'PmenuKind', 'PmenuExtra', -- Pmenu
+}
+
+for _, element in pairs(transparent_elements) do
+    vim.cmd("highlight! " .. element .. " guibg=NONE ctermbg=NONE")
+end
+
+
+local function vim_fmt(tbl)
+    local function to_str(v) if v == nil then return 'NONE' else return v end end
+    return 'guifg=' .. to_str(tbl.guifg) .. ' guibg=' .. to_str(tbl.guibg) .. ' gui=' .. to_str(tbl.gui)
+end
+
+local none               = vim_fmt {}
+
+local seemless_yellow    = vim_fmt { guifg='#fffcb0' }
+local slight_yellow      = vim_fmt { guifg='#e6d8ac' }
+local light_yellow       = vim_fmt { guifg='#ffee99' }
+local neutral_yellow     = vim_fmt { guifg='#efd96a' }
+local dim_gold           = vim_fmt { guifg='#bba800' }
+local light_orange       = vim_fmt { guifg='#ffb454' }
+
+local nitro_dimmed_blue  = vim_fmt { guifg='#7dcfee' }
+local nitro_blue         = vim_fmt { guifg='#5dcfff' }
+local mild_blue          = vim_fmt { guifg='#59c2ff' }
+local neutral_blue       = vim_fmt { guifg='#22baf7' }
+local lighter_blue       = vim_fmt { guifg='#44bad7' }
+local calm_darker_blue   = vim_fmt { guifg='#005f87' }
+local purple             = vim_fmt { guifg='#6666ff' }
+
+local disabled_blue      = vim_fmt { guifg='#81a1c1' }
+local selection          = vim_fmt { guibg='#7285A5' }
+local light_grey         = vim_fmt { guifg='#626a73' }
+local active_line        = vim_fmt { guibg='#454f62' }
+
+local spruce_green       = vim_fmt { guifg='#45d6d3' }
+local neutral_green      = vim_fmt { guifg='#a1ba8a' }
+local light_green        = vim_fmt { guifg='#c2d94c' }
+
+local slight_purple      = vim_fmt { guifg='#ccc0dd' }
+local neutral_orange     = vim_fmt { guifg='#af5f00' }
+local neutral_peach      = vim_fmt { guifg='#b65d69' }
+local neutral_red        = vim_fmt { guifg='#f07178' }
+local almost_transparent = vim_fmt { guibg='#70333a' }
+
+local vstudio_if         = vim_fmt { guifg='#758ea8', gui='bold' }
+
+local colours = {
+    Conditional                    = vstudio_if,
+    PreProc                        = vstudio_if,
+    Comment                        = disabled_blue,
+    Constant                       = none,
+    Statement                      = neutral_peach, -- @repeat.cpp
+    Keyword                        = neutral_peach,
+    Visual                         = selection,
+    LineNr                         = 'guifg=#717d8b',--
+    MsgArea                        = none,
+    Number                         = 'guifg=#ef572f',
+    -- Normal                         = none,
+    Normal                         = 'guifg=#fdfdfd guibg=NONE',
+    cBlock                         = 'guifg=#9bbb16',
+    Operator                       = none,
+    SignColumn                     = none,
+    String                         = 'guifg=#a64747', --'guifg=#ea9212',
+    cIncluded                      = 'guifg=#ff4a6b',
+    ['@lsp.type.namespace.cpp']    = nitro_dimmed_blue,
+    Structure                      = spruce_green, -- neutral_green,
+    Type                           = spruce_green, -- neutral_green,
+    ['@lsp.type.class']            = spruce_green, -- neutral_green,
+    cStorageClass                  = 'guifg=#961f12', -- const/volatile/...
+    --CursorLine                     = none,
+    --CursorColumn                   = active_line,
+    CursorLineNr                   = seemless_yellow, -- , 'guifg=#9dff00 gui=NONE',
+    CursorLineSign                 = none,
+    Delimiter                      = none,
+    Identifier                     = none,
+    DiffAdd                        = 'guibg=#0b2914',
+    DiffDelete                     = 'guibg=#420b12 guifg=#808080',
+    DiffChange                     = 'guibg=#706409',
+    DiffText                       = 'guibg=#827c52',
+    ['@lsp.type.variable']         = slight_yellow,
+    Folded                         = 'guibg=#4a5c85 guifg=NONE',
+    MoreMsg                        = 'guifg=#91ab8c gui=bold',
+    Function                       = nitro_dimmed_blue, -- 'guifg=#87afaf',
+    ['@lsp.type.function']         = nitro_dimmed_blue, -- 'guifg=#87afaf',
+    Macro                          = 'guifg=#87afaf',
+    Special                        = 'guifg=#829212', -- @constructor.cpp
+    ['@lsp.mod.functionScope.cpp'] = seemless_yellow,
+    Todo                           = 'guibg=#6ca9d2 guifg=#000000',
+    BufferLineBufferSelected       = nitro_blue,-- , 'guifg=#E66d46',
+    Search                         = 'guibg=#cebe6b',
+    Substitute                     ='guifg=#2e3440 guibg=#d08770',
+    GitSignsAdd                    = 'guifg=#317827',
+    GitSignsChange                 = 'guifg=#af5f00',
+    GitSignsDelete                 = neutral_peach,
+    FoldColumn                     = 'guifg=#7f992f guibg=NONE gui=bold',
+    ['@operator.cpp']              = 'guifg=#e2efbd',
+    ['@parameter.cpp']             = dim_gold,
+    ['FloatBorder']                = 'guifg=#6666ff',
+    ['@text.danger']               = 'guifg=#DC143C guibg=NONE gui=NONE', -- ???
+    DiagnosticWarn                 = 'guifg=#838411',
+    NeoTreeDirectoryIcon           = 'guifg=#1c78fd',
+    NeoTreeRootName                = 'gui=NONE',
+}
+
+for group,colour in pairs(colours) do
+    vim.cmd('highlight! ' .. group .. ' ' .. colour)
+end
+
+local function link(which, to)
+    vim.cmd("hi clear " .. which)
+    vim.cmd("hi link " .. which .. " " .. to)
+end
+
+link("NeoTreeCursorLine",      "CursorColumn")
+link("Include",                "Conditional")
+link("LazyDimmed",             "LazyComment")
+link("LazyProp",               "Normal")
+link("MatchParen",             "Visual")
+link("TelescopeBorder",        "FloatBorder")
+-- link("cIncluded",              "Number")
+link("diffAdded",              "DiffAdd")
+link("diffRemoved",            "DiffDelete")
+link("@lsp.type.parameter",    "@parameter.cpp")
+link("@character.cpp",         "String")
+link("@lsp.type.operator.cpp", "@operator.cpp")
+link("BufferLineCloseButtonSelected", "BufferLineBufferSelected")
+
+-- Status line, split separator
+vim.cmd[[hi StatusLineNC gui=NONE guibg=NONE guifg=NONE]]
+vim.cmd[[hi StatusLine gui=NONE guibg=NONE guifg=NONE]]
+vim.cmd[[hi VertSplit guifg=#7285a5]]
+
+-- nvim-hlslens
+vim.cmd[[hi HlSearchLens guibg=none guifg=#ff8f40]]
+vim.cmd[[hi HlSearchLens guibg=none guifg=#9b2d30]]
+vim.cmd[[hi HlSearchLensNear guifg=#c2d94c]]
+
+-- Errors
+vim.cmd[[hi DiagnosticUnderlineError gui=NONE]]
+
