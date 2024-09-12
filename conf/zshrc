@@ -1,152 +1,138 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=/usr/lib/ccache/:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+function setup_history() {
+	ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+	export HISTFILE=~/.zsh_history
+	export HISTSIZE=1000000000
+	export HISTFILESIZE=$HISTSIZE
+	export SAVEHIST=$HISTSIZE
+	export HISTORY_SUBSTRING_SEARCH_PREFIXED=1
+	export HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+	export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="normal"
+	export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND="normal"
+	alias history="history 1"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=blue,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=red,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=yellow,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-level-4]='fg=magenta,bold'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=green,bold'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow,bold'
-ZSH_HIGHLIGHT_STYLES[path]='bold,underline'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='bold'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='bold'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=yellow,bold'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
-
-alias make='make -erRS --warn-undefined-variables '
-alias gs='git status'
-alias gc='git commit --signoff -m'
-alias gr='git reset'
-alias gw='git switch'
-alias mk='make -j8 2>&1 >/dev/null | less -R'
-alias m='make'
-alias mc='make clean'
-alias re='make clean && rm -rf build && make -j8'
-alias v='nvim'
-alias cd..='cd ..'
-alias cd...='cd ...'
-alias cd-='cd -'
-alias gl='git log --oneline --first-parent'
-alias gla='git log --oneline --all --graph -n 1000'
-alias ast="astyle --options=${HOME}/astyle-linux"
-alias clr=clear
-
-echo "Signed-off-by: $(git config user.name) $(git config user.email)" > ~/.gitmessage.txt
-git config --global commit.template ~/.gitmessage.txt
-git config --global commit.gpgsign true
-git config --global gpg.program gpg
-git config --global core.editor nvim
-
-vf() {
-    nvim $(find . -name $@)
+	export HIST_STAMPS="dd.mm.yyyy"
+	setopt append_history
+	setopt share_history
+	setopt extended_history
+	setopt hist_find_no_dups
+	setopt hist_expire_dups_first
+	setopt hist_reduce_blanks
+	setopt hist_ignore_all_dups
 }
 
-gps() {
-    find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
+function setup_readline() {
+	setopt numeric_glob_sort
+
+	export WORDCHARS="*?.[]~!#$%^<>"
+	zmodload zsh/terminfo
+	bindkey -M viins $terminfo[kcuu1] history-substring-search-up
+	bindkey -M viins $terminfo[kcud1] history-substring-search-down
 }
 
-moveall() {
+function setup_prompt() {
+    function update_prompt() {
+        local branch=$(git branch --show-current 2>/dev/null)
+
+        if [ "$branch" != "" ]; then
+		branch=" ($branch)"
+        fi
+	export PS1="%{%F{#7dcfee}%}%~%{%k%}%{%F{#7dcfee}%}:%{%f%}%{%F{#fffcb0}%}${branch}%{%f%u%} %(?..%{%B%F{#be4d25}%}[%?]%{%f%b%} )"
+    }
+
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd update_prompt
+}
+
+function setup_ccache() {
+	export PATH=/usr/lib/ccache/:$HOME/.local/bin:/usr/local/bin:$PATH
+}
+
+function setup_aliases() {
+	alias grep='grep --color=always'
+	alias clr=clear
+	alias ls='ls --color=auto'
+	alias cd..='cd ..'
+	alias cd...='cd ...'
+	alias cd-='cd -'
+
+	alias make='make -erRS --warn-undefined-variables '
+	alias m='make'
+	alias mc='make clean'
+	alias re="make clean && rm -rf build && make -j $(nproc)"
+
+	alias g='git'
+	alias gaa='git add --all'
+	alias gba='git branch --all'
+	alias gdw='git diff --word-diff'
+	alias gf='git fetch'
+	alias gm='git merge'
+	alias grf='git reflog'
+	alias gss='git status --short'
+	alias ga='git add'
+	alias gb='git branch'
+	alias gc='git commit --signoff -m'
+	alias gco='git checkout'
+	alias gcp='git cherry-pick'
+	alias gd='git diff'
+	alias gds='git diff --staged'
+	alias gl='git log --oneline --first-parent'
+	alias gla='git log --oneline --all --graph'
+	alias gp='git push'
+	alias gr='git reset'
+	alias gs='git status'
+	alias gw='git switch'
+
+	alias v='nvim'
+	alias nv='nvim'
+}
+
+function setup_git() {
+	echo "Signed-off-by: $(git config user.name) $(git config user.email)" > ~/.gitmessage.txt
+	git config --global commit.template ~/.gitmessage.txt
+	git config --global commit.gpgsign true
+	git config --global gpg.program gpg
+	git config --global core.editor nvim
+}
+
+function setup_plugins() {
+	if ! [ -e ~/.antidote ]; then
+		echo 'installing antidote'
+		git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
+	fi
+	source ~/.antidote/antidote.zsh
+	antidote load
+}
+
+function plugin_zsh_syntax_highlightning() {
+	export ZSH_THEME="robbyrussell"
+	export ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=blue,bold'
+	export ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=red,bold'
+	export ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=yellow,bold'
+	export ZSH_HIGHLIGHT_STYLES[bracket-level-4]='fg=magenta,bold'
+	export ZSH_HIGHLIGHT_STYLES[builtin]='fg=green,bold'
+	export ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow,bold'
+	export ZSH_HIGHLIGHT_STYLES[path]='bold,underline'
+	export ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='bold'
+	export ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='bold'
+	export ZSH_HIGHLIGHT_STYLES[redirection]='fg=yellow,bold'
+	export ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
+}
+
+function mk() {
+	make -j $(nproc) $@ 2>&1 >/dev/null | less -R
+}
+
+function vf() {
+	nvim $(find . -name $@)
+}
+
+function gps() {
+	find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
+}
+
+function moveall() {
     for f in $(ls -a)
     do
         if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
@@ -156,3 +142,12 @@ moveall() {
     done
 }
 
+setup_history
+setup_readline
+setup_prompt
+setup_ccache
+setup_aliases
+setup_git
+
+setup_plugins
+plugin_zsh_syntax_highlightning

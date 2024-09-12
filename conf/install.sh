@@ -1,3 +1,6 @@
+#!/bin/bash
+
+set -e
 
 cp ~/.vimrc ./vimrc.backup 2> /dev/null
 cp vimrc ~/.vimrc
@@ -5,11 +8,8 @@ cp vimrc ~/.vimrc
 cp ~/.zshrc ./zshrc.backup 2> /dev/null
 cp zshrc ~/.zshrc
 
-cp ~/.ctags ./ctags.backup 2> /dev/null
-cp ctags ~/.ctags
-
-cp ~/astyle-linux ./astyle-linux.backup 2> /dev/null
-cp astyle-linux ~/
+cp ~/.zsh_plugins.txt ./zsh_plugins.txt.backup 2> /dev/null
+cp zsh_plugins.txt ~/.zsh_plugins.txt
 
 cp ~/.gdbinit ./gdbinit.backup 2> /dev/null
 cp gdbinit ~/.gdbinit
@@ -19,6 +19,4 @@ cp lldbinit ~/.lldbinit
 
 cp ~/.pdbrc ./pdbrc.backup 2> /dev/null
 cp pdbrc ~/.pdbrc
-
-cp lldbinit.py ~/lldbinit.py
 

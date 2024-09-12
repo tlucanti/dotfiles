@@ -50,6 +50,7 @@ local plugins = {
 	'folke/noice.nvim',
 },
 
+'WhoIsSethDaniel/mason-tool-installer.nvim',
 'echasnovski/mini.surround',
 'folke/todo-comments.nvim',
 'tpope/vim-repeat',
@@ -279,6 +280,25 @@ require('notify').setup({
 require('leap').add_default_mappings(true)
 
 require('lualine').setup()
+
+require('mason-tool-installer').setup {
+
+	ensure_installed = {
+		'clangd',
+		'lua-language-server',
+		-- 'vim-language-server',
+		-- 'bash-language-server',
+		'cmake-language-server',
+		-- 'dockerfile-language-server',
+		-- 'yaml-language-server',
+		'opencl-language-server',
+	},
+
+	auto_update = true,
+	run_on_start = true,
+	start_delay = 0,
+	debounce_hours = 5, -- at least 5 hours between attempts to install/update
+}
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
