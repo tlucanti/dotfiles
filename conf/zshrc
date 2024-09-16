@@ -144,10 +144,12 @@ function moveall() {
 
 setup_history
 setup_readline
-setup_prompt
+#setup_prompt
 setup_ccache
 setup_aliases
 setup_git
 
 setup_plugins
 plugin_zsh_syntax_highlightning
+
+source ~/.oh-my-zsh/oh-my-zsh.sh
