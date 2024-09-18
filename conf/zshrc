@@ -57,6 +57,7 @@ function setup_aliases() {
 	alias cd...='cd ...'
 	alias cd-='cd -'
 
+	alias make-raw='/usr/bin/make'
 	alias make='make -erRS --warn-undefined-variables '
 	alias m='make'
 	alias mc='make clean'
@@ -149,7 +150,7 @@ setup_ccache
 setup_aliases
 setup_git
 
+source ~/.oh-my-zsh/oh-my-zsh.sh
+
 setup_plugins
 plugin_zsh_syntax_highlightning
-
-source ~/.oh-my-zsh/oh-my-zsh.sh

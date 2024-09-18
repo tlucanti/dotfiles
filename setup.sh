@@ -3,7 +3,7 @@
 set -e
 
 echo APT INSTALL
-sudo apt-get install -y vim git zsh curl wget python3 python3-venv ripgrep tldr build-essential
+sudo apt-get install -y vim git zsh curl wget python3 python3-venv ripgrep tldr build-essential ccache
 
 # clone this repo first
 echo CLONE DOTFILES
