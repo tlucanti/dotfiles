@@ -16,8 +16,7 @@ groups: []
 configSync:
   parts: {}
 hotkeys:
-  toggle-window:
-    - Ctrl-Space
+  toggle-window: []
   copy-current-path: []
   ctrl-c:
     - Ctrl-C
