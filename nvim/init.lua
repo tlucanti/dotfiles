@@ -57,6 +57,7 @@ local plugins = {
 'ggandor/leap.nvim',
 'rhysd/vim-clang-format',
 'nvim-lualine/lualine.nvim',
+'tikhomirov/vim-glsl',
 
 'neovim/nvim-lspconfig',
 'L3MON4D3/LuaSnip',
@@ -472,21 +473,22 @@ local term_bg_blue_2 = '#302b63'
 local term_bg_blue_3 = '#24243e'
 
 vim.cmd("highlight TelescopeSelection   guibg=" .. term_bg_blue_2)
-vim.cmd("highlight TelescopePreviewLine guibg=" .. term_bg_blue_1)
-vim.cmd("highlight PmenuSel             guibg=" .. term_bg_blue_1)
-vim.cmd("highlight LazyButtonActive     guibg=" .. term_bg_blue_1)
+vim.cmd("highlight TelescopePreviewLine guibg=" .. term_bg_blue_2)
+vim.cmd("highlight PmenuSel             guibg=" .. term_bg_blue_3)
+vim.cmd("highlight LazyButtonActive     guibg=" .. term_bg_blue_3)
 
 local transparent_elements =
 {
-    'BufferLineTabClose', 'BufferLineCloseButtonSelected', 'BufferLineCloseButton', 'BufferLineModified', 'BufferLineModifiedSelected', 'BufferLineModifiedVisible',
+    -- 'BufferLineTabClose', 'BufferLineCloseButtonSelected',
+    -- 'BufferLineCloseButton', 'BufferLineModified', 'BufferLineModifiedSelected', 'BufferLineModifiedVisible',
 
-    'NormalFloat', 'NormalNC', 'SignColumnSB', 'NormalSB',
+    --'NormalFloat', 'NormalNC', 'SignColumnSB', 'NormalSB',
 
-    'WhichKeyFloat', -- WhichKey plugin
+    --'WhichKeyFloat', -- WhichKey plugin
 
-    'LspFloatWinBorder', 'LspFloatWinNormal', 'LspTroubleNormal', -- LSP
+    --'LspFloatWinBorder', 'LspFloatWinNormal', 'LspTroubleNormal', -- LSP
 
-    'Pmenu', 'PmenuSbar', 'PmenuThumb', 'PmenuKind', 'PmenuExtra', -- Pmenu
+    --'Pmenu', 'PmenuSbar', 'PmenuThumb', 'PmenuKind', 'PmenuExtra', -- Pmenu
 }
 
 for _, element in pairs(transparent_elements) do
@@ -514,6 +516,7 @@ local mild_blue          = vim_fmt { guifg='#59c2ff' }
 local neutral_blue       = vim_fmt { guifg='#22baf7' }
 local lighter_blue       = vim_fmt { guifg='#44bad7' }
 local calm_darker_blue   = vim_fmt { guifg='#005f87' }
+local darker_blue        = vim_fmt { guifg='#106f97' }
 local purple             = vim_fmt { guifg='#6666ff' }
 
 local disabled_blue      = vim_fmt { guifg='#81a1c1' }
@@ -524,6 +527,7 @@ local active_line        = vim_fmt { guibg='#454f62' }
 local spruce_green       = vim_fmt { guifg='#45d6d3' }
 local neutral_green      = vim_fmt { guifg='#a1ba8a' }
 local light_green        = vim_fmt { guifg='#c2d94c' }
+local slight_green       = vim_fmt { guifg='#dfef5f' }
 
 local slight_purple      = vim_fmt { guifg='#ccc0dd' }
 local neutral_orange     = vim_fmt { guifg='#af5f00' }
@@ -537,7 +541,7 @@ local colours = {
     Conditional                    = vstudio_if,
     PreProc                        = vstudio_if,
     Comment                        = disabled_blue,
-    Constant                       = none,
+    Constant                       = slight_purple,
     Statement                      = neutral_peach, -- @repeat.cpp
     Keyword                        = neutral_peach,
     Visual                         = selection,
@@ -552,6 +556,7 @@ local colours = {
     String                         = 'guifg=#a64747', --'guifg=#ea9212',
     cIncluded                      = 'guifg=#ff4a6b',
     ['@lsp.type.namespace.cpp']    = nitro_dimmed_blue,
+    -- ['@lsp.type.macro.cpp']        = darker_blue,
     Structure                      = spruce_green, -- neutral_green,
     Type                           = spruce_green, -- neutral_green,
     ['@lsp.type.class']            = spruce_green, -- neutral_green,
@@ -577,7 +582,7 @@ local colours = {
     Todo                           = 'guibg=#6ca9d2 guifg=#000000',
     BufferLineBufferSelected       = nitro_blue,-- , 'guifg=#E66d46',
     Search                         = 'guibg=#cebe6b',
-    Substitute                     ='guifg=#2e3440 guibg=#d08770',
+    Substitute                     = 'guifg=#2e3440 guibg=#d08770',
     GitSignsAdd                    = 'guifg=#317827',
     GitSignsChange                 = 'guifg=#af5f00',
     GitSignsDelete                 = neutral_peach,
