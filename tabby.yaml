@@ -6,9 +6,47 @@ profiles:
     options:
       host: 194.28.226.165
       user: tlucanti
-      algorithms: {}
+      algorithms:
+        hmac:
+          - hmac-sha1
+          - hmac-sha1-etm@openssh.com
+          - hmac-sha2-256
+          - hmac-sha2-256-etm@openssh.com
+          - hmac-sha2-512
+          - hmac-sha2-512-etm@openssh.com
+        kex:
+          - curve25519-sha256
+          - curve25519-sha256@libssh.org
+          - diffie-hellman-group-exchange-sha256
+          - diffie-hellman-group14-sha256
+          - diffie-hellman-group15-sha512
+          - diffie-hellman-group16-sha512
+          - diffie-hellman-group17-sha512
+          - diffie-hellman-group18-sha512
+          - ecdh-sha2-nistp256
+          - ecdh-sha2-nistp384
+          - ecdh-sha2-nistp521
+        cipher:
+          - aes128-ctr
+          - aes128-gcm
+          - aes128-gcm@openssh.com
+          - aes192-ctr
+          - aes256-ctr
+          - aes256-gcm
+          - aes256-gcm@openssh.com
+        serverHostKey:
+          - ecdsa-sha2-nistp256
+          - ecdsa-sha2-nistp384
+          - ecdsa-sha2-nistp521
+          - rsa-sha2-256
+          - rsa-sha2-512
+          - ssh-ed25519
+          - ssh-rsa
       input: {}
       auth: password
+      privateKeys: []
+      forwardedPorts: []
+      scripts: []
     weight: -1
     color: '#ffff40'
     id: ssh:custom:nuxt:6d2ee8d8-073e-4ce7-a34b-a3e2534cd631
@@ -79,9 +117,6 @@ hotkeys:
     - Ctrl-Shift-N
   profile: {}
   profile-selectors: {}
-  toggle-fullscreen:
-    - F11
-    - Alt-Enter
   close-tab:
     - Ctrl-Alt-Shift-Q
   reopen-tab:
@@ -103,8 +138,6 @@ hotkeys:
     - Ctrl-Shift
   duplicate-tab: []
   restart-tab: []
-  reconnect-tab: []
-  disconnect-tab: []
   explode-tab:
     - Ctrl-Shift-.
   combine-tabs:
@@ -179,6 +212,10 @@ hotkeys:
     - Ctrl-Shift-E
   command-selector:
     - Ctrl-Shift-P
+  reconnect-tab: []
+  disconnect-tab: []
+  toggle-fullscreen:
+    - F11
 terminal:
   searchOptions: {}
   colorScheme:
@@ -204,7 +241,6 @@ terminal:
       - '#b7fff9'
       - '#ffffff'
   font: JetBrainsMono Nerd Font
-  ligatures: true
   fontWeightBold: 800
   cursor: beam
   linePadding: 1.5
@@ -237,9 +273,15 @@ terminal:
       - '#ffffff'
   customColorSchemes: []
   hideTabIndex: true
-  hideTabOptionsButton: true
   hideCloseButton: true
-ssh: {}
+  copyAsHTML: false
+  hideTabOptionsButton: true
+ssh:
+  knownHosts:
+    - host: 194.28.226.165
+      port: 22
+      type: ecdsa-sha2-nistp256
+      digest: 3aK61SoFxWtyRGhsf1n+pr7JyUJqBtC63Lz9kQUiIGM=
 clickableLinks:
   modifier: ctrlKey
 accessibility: {}
