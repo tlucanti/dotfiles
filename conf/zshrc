@@ -97,6 +97,31 @@ function setup_git() {
 	git config --global core.editor nvim
 }
 
+function mk() {
+	make -j $(nproc) $@ 2>&1 >/dev/null | less -R
+}
+
+function vf() {
+	nvim $(find . -name $@)
+}
+
+function gps() {
+	find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
+}
+
+function moveall() {
+    for f in $(ls -a)
+    do
+        if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
+            echo moving $f to $1
+	    mv $f $1
+    fi
+    done
+}
+
+# =============================================================================
+# PLUGINS
+
 function setup_plugins() {
 	if ! [ -e ~/.antidote ]; then
 		echo 'installing antidote'
@@ -121,28 +146,18 @@ function plugin_zsh_syntax_highlightning() {
 	export ZSH_HIGHLIGHT_STYLES[arg0]='fg=green,bold'
 }
 
-function mk() {
-	make -j $(nproc) $@ 2>&1 >/dev/null | less -R
+# =============================================================================
+# YANDEX
+function setup_yandex() {
+	# The next line updates PATH for Yandex Cloud Private CLI.
+	if [ -f '/home/tlucanti/ycp/path.bash.inc' ]; then source '/home/tlucanti/ycp/path.bash.inc'; fi
+
+	# pssh autocomplete
+	source ~/.pssh/complete.zsh
 }
 
-function vf() {
-	nvim $(find . -name $@)
-}
 
-function gps() {
-	find . -type f -name "*$2*" ! -name '*.swp' ! -name 'tags' -exec grep -Hn "$1" --color=always {} \;
-}
-
-function moveall() {
-    for f in $(ls -a)
-    do
-        if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
-            echo moving $f to $1
-	    mv $f $1
-    fi
-    done
-}
-
+# GLOBAL SETUP
 setup_history
 setup_readline
 #setup_prompt
@@ -150,7 +165,11 @@ setup_ccache
 setup_aliases
 setup_git
 
-source ~/.oh-my-zsh/oh-my-zsh.sh
+# LOCAL SETUP
+setup_yandex
 
 setup_plugins
 plugin_zsh_syntax_highlightning
+
+source ~/.oh-my-zsh/oh-my-zsh.sh
+
