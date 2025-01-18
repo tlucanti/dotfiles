@@ -53,11 +53,15 @@ local plugins = {
 'WhoIsSethDaniel/mason-tool-installer.nvim',
 'echasnovski/mini.surround',
 'folke/todo-comments.nvim',
+'numToStr/Comment.nvim',
 'tpope/vim-repeat',
+'windwp/nvim-autopairs',
 'ggandor/leap.nvim',
 'rhysd/vim-clang-format',
 'nvim-lualine/lualine.nvim',
 'tikhomirov/vim-glsl',
+'mg979/vim-visual-multi',
+'airblade/vim-gitgutter',
 
 'neovim/nvim-lspconfig',
 'L3MON4D3/LuaSnip',
@@ -428,6 +432,21 @@ lsp.on_attach(function(client, bufnr)
     }, bufnr)
 end)
 
+require('lspconfig').pylsp.setup{
+  on_attach = custom_attach,
+  capabilities = capabilities,
+  settings = {
+      plugins = {
+          jedi = { extra_paths = {
+              '~/arc',
+              -- '~/arc/yt/python',
+              -- '~/arc/contrib/libs/protobuf/python',
+              '~/arc/contrib/python',
+          } }
+      }
+  }
+}
+
 -- lsp.extend_cmp()
 
 -- vim opt
@@ -446,17 +465,17 @@ vim.api.nvim_set_keymap('i', '<S-Down>', '<ESC><S-v>j', {})
 vim.api.nvim_set_keymap('n', '<S-Down>', '<S-v>j', {})
 vim.api.nvim_set_keymap('v', '<S-Down>', 'j', {})
 
-vim.api.nvim_set_keymap('i', '<C-Up>', '<ESC><C-v>k', {})
-vim.api.nvim_set_keymap('n', '<C-Up>', '<C-v>k', {})
-vim.api.nvim_set_keymap('i', '<C-Down>', '<ESC><C-v>j', {})
-vim.api.nvim_set_keymap('n', '<C-Down>', '<C-v>j', {})
+-- vim.api.nvim_set_keymap('i', '<C-Up>', '<ESC><C-v>k', {})
+-- vim.api.nvim_set_keymap('n', '<C-Up>', '<C-v>k', {})
+-- vim.api.nvim_set_keymap('i', '<C-Down>', '<ESC><C-v>j', {})
+-- vim.api.nvim_set_keymap('n', '<C-Down>', '<C-v>j', {})
 
 vim.keymap.set('n', '<leader>f', require('telescope.builtin').find_files, {})
 vim.keymap.set('n', '<leader>g', require('telescope.builtin').live_grep, {})
 vim.keymap.set('n', '<leader>r', require('telescope.builtin').resume, {})
 vim.keymap.set('n', '<leader>c', require('telescope.builtin').resume, {})
 
-vim.keymap.set('n', '<C-n>', function() vim.cmd('GdbNext') end)
+-- vim.keymap.set('n', '<C-n>', function() vim.cmd('GdbNext') end)
 
 vim.cmd("highlight! GitSignsAdd guifg='#007700'")
 vim.cmd("highlight! GitSignsChange guifg='#ffff00'")
