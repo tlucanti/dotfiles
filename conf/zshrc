@@ -32,17 +32,63 @@ function setup_readline() {
 }
 
 function setup_prompt() {
-    function update_prompt() {
-        local branch=$(git branch --show-current 2>/dev/null)
+	#set colors
+	export bold="%{%B%}"
+	export red="${bold}%{%F{#ff8888}%}";
+	export green="${bold}%{%F{#88ff88}%}";
+	export blue="${bold}%{%F{#8888ff}%}";
+	export cyan="${bold}%{%F{#88ffff}%}";
+	export reset="${bold}%{%f%b%}";
 
-        if [ "$branch" != "" ]; then
-		branch=" ($branch)"
-        fi
-	export PS1="%{%F{#7dcfee}%}%~%{%k%}%{%F{#7dcfee}%}:%{%f%}%{%F{#fffcb0}%}${branch}%{%f%u%} %(?..%{%B%F{#be4d25}%}[%?]%{%f%b%} )"
-    }
+	function update_prompt() {
+		# --------------------
+		# setup status
+		local st=$?;
 
-    autoload -Uz add-zsh-hook
-    add-zsh-hook precmd update_prompt
+		if [ "$st" = "0" ]; then
+			st="${green}➜${reset}";
+		else
+			st="${red}($st)$reset";
+		fi
+
+
+		# setup cwd
+		# --------------------
+		local cwd;
+
+		cwd=${PWD##*/}
+		if [ "$cwd" = "" ]; then
+			cwd="/";
+		elif [ $(pwd) = $(cd ~ && pwd) ]; then
+			cwd="~";
+		fi
+		cwd=${cyan}${cwd}${reset};
+
+
+		# --------------------
+		# setup current branch
+		local git_branch=$(git branch --show-current 2>/dev/null);
+		local arc_branch=$(arc branch -q 2>/dev/null | grep '*' | tail -c +3);
+		local branch;
+		local vc;
+
+		if [ "$git_branch" != "" ]; then
+			branch="$git_branch";
+			vc="git";
+		elif [ "$arc_branch" != "" ]; then
+			branch="$arc_branch";
+			vc="arc";
+		fi
+		if [ "$branch" != "" ]; then
+			branch=" ${blue}${vc}:(${red}${branch}${blue})${reset}";
+		fi
+
+		export PS1="${st} ${cwd}${branch} "
+		#export PS1="%{%F{#7dcfee}%}%~%{%k%}%{%F{#7dcfee}%}:%{%f%}%{%F{#fffcb0}%}${branch}%{%f%u%} %(?..%{%B%F{#be4d25}%}[%?]%{%f%b%} )"
+	}
+
+	autoload -Uz add-zsh-hook
+	add-zsh-hook precmd update_prompt
 }
 
 function setup_ccache() {
@@ -70,6 +116,7 @@ function setup_aliases() {
 	alias gf='git fetch'
 	alias gm='git merge'
 	alias grf='git reflog'
+	alias gs='git status'
 	alias gss='git status --short'
 	alias ga='git add'
 	alias gb='git branch'
@@ -82,8 +129,28 @@ function setup_aliases() {
 	alias gla='git log --oneline --all --graph'
 	alias gp='git push'
 	alias gr='git reset'
-	alias gs='git status'
 	alias gw='git switch'
+
+	alias a='arc'
+	alias aaa='arc add --all'
+	alias adw='arc diff --word-diff'
+	alias af='arc fetch'
+	alias am='arc merge'
+	alias arf='arc reflog'
+	alias ass='arc status -u all --short'
+	alias as='arc status -u all'
+	alias aa='arc add'
+	alias ab='arc branch'
+	alias ac='arc commit --signoff -m'
+	alias aco='arc checkout'
+	alias acp='arc cherry-pick'
+	alias ad='arc diff'
+	alias ads='arc diff --staged'
+	alias al='arc log --oneline --first-parent'
+	alias ala='arc log --oneline --all --graph'
+	alias ap='arc push'
+	alias ar='arc reset'
+	alias aw='arc checkout'
 
 	alias v='nvim'
 	alias nv='nvim'
@@ -110,13 +177,12 @@ function gps() {
 }
 
 function moveall() {
-    for f in $(ls -a)
-    do
-        if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
-            echo moving $f to $1
-	    mv $f $1
-    fi
-    done
+	for f in $(ls -a); do
+		if [[ $f != '.git' ]] && [[ $f != $1 ]] && [[ $f != '.' && $f != '..' ]]; then
+			echo moving $f to $1
+			mv $f $1
+		fi
+	done
 }
 
 # =============================================================================
@@ -154,13 +220,17 @@ function setup_yandex() {
 
 	# pssh autocomplete
 	source ~/.pssh/complete.zsh
+
+	cd /
+	arc mount --repository cloudia ~/cloudia 2> /dev/null
+	cd - > /dev/null
 }
 
 
 # GLOBAL SETUP
 setup_history
 setup_readline
-#setup_prompt
+setup_prompt
 setup_ccache
 setup_aliases
 setup_git
