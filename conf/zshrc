@@ -51,7 +51,6 @@ function setup_prompt() {
 			st="${red}($st)$reset";
 		fi
 
-
 		# setup cwd
 		# --------------------
 		local cwd;
@@ -59,16 +58,15 @@ function setup_prompt() {
 		cwd=${PWD##*/}
 		if [ "$cwd" = "" ]; then
 			cwd="/";
-		elif [ $(pwd) = $(cd ~ && pwd) ]; then
+		elif [ "$PWD" = "$HOME" ]; then
 			cwd="~";
 		fi
 		cwd=${cyan}${cwd}${reset};
 
-
 		# --------------------
 		# setup current branch
-		local git_branch=$(git branch --show-current 2>/dev/null);
-		local arc_branch=$(arc branch -q 2>/dev/null | grep '*' | tail -c +3);
+		local git_branch=$(/usr/bin/git branch --show-current 2>/dev/null);
+		local arc_branch=$(bash -c 'grep "*" --line-buffered -m1 <( exec arc branch 2> /dev/null ) | tail -c +3; kill $! 2> /dev/null')
 		local branch;
 		local vc;
 
@@ -84,7 +82,6 @@ function setup_prompt() {
 		fi
 
 		export PS1="${st} ${cwd}${branch} "
-		#export PS1="%{%F{#7dcfee}%}%~%{%k%}%{%F{#7dcfee}%}:%{%f%}%{%F{#fffcb0}%}${branch}%{%f%u%} %(?..%{%B%F{#be4d25}%}[%?]%{%f%b%} )"
 	}
 
 	autoload -Uz add-zsh-hook
@@ -94,6 +91,27 @@ function setup_prompt() {
 function setup_ccache() {
 	export PATH=/usr/lib/ccache/:$HOME/.local/bin:/usr/local/bin:$PATH
 }
+
+function git_or_arc() {
+	local not_in_arc="Not a mounted arc repository. Did you forget to mount arcadia?";
+
+	if [ "$(arc rev-parse --is-inside-work-tree 2>&1)" = $not_in_arc ]; then
+		/usr/bin/git $@;
+	else
+		arc $@;
+	fi
+}
+
+function git_or_arc_switch() {
+	local not_in_arc="Not a mounted arc repository. Did you forget to mount arcadia?";
+
+	if [ "$(arc rev-parse --is-inside-work-tree 2>&1)" = $not_in_arc ]; then
+		/usr/bin/git switch "$@";
+	else
+		arc checkout "$@";
+	fi
+}
+
 
 function setup_aliases() {
 	alias grep='grep --color=always'
@@ -109,29 +127,29 @@ function setup_aliases() {
 	alias mc='make clean'
 	alias re="make clean && rm -rf build && make -j $(nproc)"
 
-	alias g='git'
-	alias gaa='git add --all'
-	alias gba='git branch --all'
-	alias gdw='git diff --word-diff'
-	alias gf='git fetch'
-	alias gm='git merge'
-	alias grf='git reflog'
-	alias gs='git status'
-	alias gss='git status --short'
-	alias ga='git add'
-	alias gb='git branch'
-	alias gc='git commit --signoff -m'
-	alias gco='git checkout'
-	alias gcp='git cherry-pick'
-	alias gd='git diff'
-	alias gds='git diff --staged'
-	alias gl='git log --oneline --first-parent'
-	alias gla='git log --oneline --all --graph'
-	alias gp='git push'
-	alias gr='git reset'
-	alias gw='git switch'
+	alias g='git_or_arc'
+	alias git='git_or_arc'
+	alias gaa='git_or_arc add --all'
+	alias gba='git_or_arc branch --all'
+	alias gdw='git_or_arc diff --word-diff'
+	alias gf='git_or_arc fetch'
+	alias gm='git_or_arc merge'
+	alias grf='git_or_arc reflog'
+	alias gs='git_or_arc status'
+	alias gss='git_or_arc status --short'
+	alias ga='git_or_arc add'
+	alias gb='git_or_arc branch'
+	alias gc='git_or_arc commit --signoff -m'
+	alias gco='git_or_arc checkout'
+	alias gcp='git_or_arc cherry-pick'
+	alias gd='git_or_arc diff'
+	alias gds='git_or_arc diff --staged'
+	alias gl='git_or_arc log --oneline --first-parent'
+	alias gla='git_or_arc log --oneline --all --graph'
+	alias gp='git_or_arc push'
+	alias gr='git_or_arc reset'
+	alias gw='git_or_arc_switch'
 
-	alias a='arc'
 	alias aaa='arc add --all'
 	alias adw='arc diff --word-diff'
 	alias af='arc fetch'
@@ -157,11 +175,17 @@ function setup_aliases() {
 }
 
 function setup_git() {
-	echo "Signed-off-by: $(git config user.name) $(git config user.email)" > ~/.gitmessage.txt
-	git config --global commit.template ~/.gitmessage.txt
-	git config --global commit.gpgsign true
-	git config --global gpg.program gpg
-	git config --global core.editor nvim
+	echo "Signed-off-by: $(/usr/bin/git config user.name) $(/usr/bin/git config user.email)" > ~/.gitmessage.txt
+
+	/usr/bin/git config --global commit.template ~/.gitmessage.txt
+	/usr/bin/git config --global commit.gpgsign true
+	/usr/bin/git config --global gpg.program gpg
+	/usr/bin/git config --global core.editor nvim
+
+	arc config commit.template ~/.gitmessage.txt
+	arc config commit.gpgsign true
+	arc config gpg.program gpg
+	arc config core.editor nvim
 }
 
 function mk() {
@@ -191,7 +215,7 @@ function moveall() {
 function setup_plugins() {
 	if ! [ -e ~/.antidote ]; then
 		echo 'installing antidote'
-		git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
+		/usr/bin/git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
 	fi
 	source ~/.antidote/antidote.zsh
 	antidote load
