@@ -65,20 +65,19 @@ function setup_prompt() {
 
 		# --------------------
 		# setup current branch
-		local git_branch=$(/usr/bin/git branch --show-current 2>/dev/null);
-		local arc_branch=$(bash -c 'grep "*" --line-buffered -m1 <( exec arc branch 2> /dev/null ) | tail -c +3; kill $! 2> /dev/null')
-		local branch;
-		local vc;
+		local branch=$(/usr/bin/git branch --show-current 2>/dev/null);
+		local head=$(git rev-parse --short HEAD 2>/dev/null)
 
-		if [ "$git_branch" != "" ]; then
-			branch="$git_branch";
-			vc="git";
-		elif [ "$arc_branch" != "" ]; then
-			branch="$arc_branch";
-			vc="arc";
+		if [ -z "$branch" ]; then
+			branch=$(git describe --exact-match $head 2>/dev/null)
 		fi
+
+		if [ -z "$branch" ]; then
+			branch=$head
+		fi
+
 		if [ "$branch" != "" ]; then
-			branch=" ${blue}${vc}:(${red}${branch}${blue})${reset}";
+			branch=" ${blue}git:(${red}${branch}${blue})${reset}";
 		fi
 
 		export PS1="${st} ${cwd}${branch} "
@@ -92,27 +91,6 @@ function setup_ccache() {
 	export PATH=/usr/lib/ccache/:$HOME/.local/bin:/usr/local/bin:$PATH
 }
 
-function git_or_arc() {
-	local not_in_arc="Not a mounted arc repository. Did you forget to mount arcadia?";
-
-	if [ "$(arc rev-parse --is-inside-work-tree 2>&1)" = $not_in_arc ]; then
-		/usr/bin/git $@;
-	else
-		arc $@;
-	fi
-}
-
-function git_or_arc_switch() {
-	local not_in_arc="Not a mounted arc repository. Did you forget to mount arcadia?";
-
-	if [ "$(arc rev-parse --is-inside-work-tree 2>&1)" = $not_in_arc ]; then
-		/usr/bin/git switch "$@";
-	else
-		arc checkout "$@";
-	fi
-}
-
-
 function setup_aliases() {
 	alias grep='grep --color=always'
 	alias clr=clear
@@ -120,72 +98,55 @@ function setup_aliases() {
 	alias cd..='cd ..'
 	alias cd...='cd ...'
 	alias cd-='cd -'
+	alias hist='history | fzf'
 
-	alias make-raw='/usr/bin/make'
+	alias umake='/usr/bin/make'
 	alias make='make -erRS --warn-undefined-variables '
 	alias m='make'
 	alias mc='make clean'
 	alias re="make clean && rm -rf build && make -j $(nproc)"
 
-	alias g='git_or_arc'
-	alias git='git_or_arc'
-	alias gaa='git_or_arc add --all'
-	alias gba='git_or_arc branch --all'
-	alias gdw='git_or_arc diff --word-diff'
-	alias gf='git_or_arc fetch'
-	alias gm='git_or_arc merge'
-	alias grf='git_or_arc reflog'
-	alias gs='git_or_arc status'
-	alias gss='git_or_arc status --short'
-	alias ga='git_or_arc add'
-	alias gb='git_or_arc branch'
-	alias gc='git_or_arc commit --signoff -m'
-	alias gco='git_or_arc checkout'
-	alias gcp='git_or_arc cherry-pick'
-	alias gd='git_or_arc diff'
-	alias gds='git_or_arc diff --staged'
-	alias gl='git_or_arc log --oneline --first-parent'
-	alias gla='git_or_arc log --oneline --all --graph'
-	alias gp='git_or_arc push'
-	alias gr='git_or_arc reset'
-	alias gw='git_or_arc_switch'
-
-	alias aaa='arc add --all'
-	alias adw='arc diff --word-diff'
-	alias af='arc fetch'
-	alias am='arc merge'
-	alias arf='arc reflog'
-	alias ass='arc status -u all --short'
-	alias as='arc status -u all'
-	alias aa='arc add'
-	alias ab='arc branch'
-	alias ac='arc commit --signoff -m'
-	alias aco='arc checkout'
-	alias acp='arc cherry-pick'
-	alias ad='arc diff'
-	alias ads='arc diff --staged'
-	alias al='arc log --oneline --first-parent'
-	alias ala='arc log --oneline --all --graph'
-	alias ap='arc push'
-	alias ar='arc reset'
-	alias aw='arc checkout'
+	alias ugit='/usr/bin/git'
+	alias g='git'
+	alias git='git'
+	alias gaa='git add --all'
+	alias gba='git branch --all'
+	alias gdw='git diff --word-diff'
+	alias gf='git fetch'
+	alias gm='git merge'
+	alias grf='git reflog'
+	alias grb='git rebase'
+	alias grbc='git rebase --continue'
+	alias gs='git status'
+	alias gss='git status --short'
+	alias ga='git add'
+	alias gb='git branch'
+	alias gc='git commit --signoff -m'
+	alias gca='git commit --amend'
+	alias gco='git checkout'
+	alias gcp='git cherry-pick'
+	alias gcpc='git cherry-pick --continue'
+	alias gd='git diff'
+	alias gds='git diff --staged'
+	alias gl='git log --oneline --first-parent'
+	alias gla='git log --oneline --all --graph'
+	alias gp='git push'
+	alias gpu='git pull'
+	alias gr='git reset'
+	alias gw='git switch'
 
 	alias v='nvim'
 	alias nv='nvim'
 }
 
 function setup_git() {
-	echo "Signed-off-by: $(/usr/bin/git config user.name) $(/usr/bin/git config user.email)" > ~/.gitmessage.txt
+	echo "Signed-off-by: $(git config user.name) <$(git config user.email)>" > ~/.gitmessage.txt
 
-	/usr/bin/git config --global commit.template ~/.gitmessage.txt
-	/usr/bin/git config --global commit.gpgsign true
-	/usr/bin/git config --global gpg.program gpg
-	/usr/bin/git config --global core.editor nvim
-
-	arc config commit.template ~/.gitmessage.txt
-	arc config commit.gpgsign true
-	arc config gpg.program gpg
-	arc config core.editor nvim
+	git config --global commit.template ~/.gitmessage.txt
+	git config --global commit.gpgsign true
+	git config --global user.signingkey "488AA56EA550DE76"
+	git config --global gpg.program gpg
+	git config --global core.editor nvim
 }
 
 function mk() {
@@ -207,6 +168,11 @@ function moveall() {
 			mv $f $1
 		fi
 	done
+}
+
+function top-contrib {
+	since="${1:-'30 days ago'}"
+	git log --since="$since" | grep 'Signed-off-by' | tr -d '<>' | sort | uniq -c | sort -bgr
 }
 
 # =============================================================================
@@ -254,16 +220,16 @@ function setup_yandex() {
 # GLOBAL SETUP
 setup_history
 setup_readline
-setup_prompt
+#setup_prompt
 setup_ccache
 setup_aliases
 setup_git
 
 # LOCAL SETUP
-setup_yandex
+# setup_yandex
+
+source ~/.oh-my-zsh/oh-my-zsh.sh
 
 setup_plugins
 plugin_zsh_syntax_highlightning
-
-source ~/.oh-my-zsh/oh-my-zsh.sh
 
