@@ -118,7 +118,7 @@ function setup_aliases() {
 	alias grb='git rebase'
 	alias grbc='git rebase --continue'
 	alias gs='git status'
-	alias gss='git status --short'
+	alias gss='git show --name-only'
 	alias ga='git add'
 	alias gb='git branch'
 	alias gc='git commit --signoff -m'
@@ -135,6 +135,9 @@ function setup_aliases() {
 	alias gr='git reset'
 	alias gw='git switch'
 
+	alias grw='_grb reword'
+	alias grbi='_grb edit'
+
 	alias v='nvim'
 	alias nv='nvim'
 }
@@ -147,6 +150,10 @@ function setup_git() {
 	git config --global user.signingkey "488AA56EA550DE76"
 	git config --global gpg.program gpg
 	git config --global core.editor nvim
+}
+
+function setup_ai() {
+	export YADRO_LLM_API_KEY=$(cat ~/.yadro.ai.yaml | grep apiKey | head -n 1 | awk '{print $2}')
 }
 
 function mk() {
@@ -173,6 +180,34 @@ function moveall() {
 function top-contrib {
 	since="${1:-'30 days ago'}"
 	git log --since="$since" | grep 'Signed-off-by' | tr -d '<>' | sort | uniq -c | sort -bgr
+}
+
+function _grb {
+	if [ -z "$2" ]; then
+		echo "expected commit SHA or commit message to do the change";
+		return 1;
+	fi
+
+	local sha=$(git rev-parse "$2");
+	if  [ $? -ne 0 ]; then
+		sha==$(git log --oneline | grep "$2" -m 1 | awk '{print $1}');
+	fi
+
+
+	local seq_editor
+	seq_editor=$(mktemp --tmpdir git‑seq‑editor.XXXXXX)
+
+	cat >"$seq_editor" <<EOF
+#!/bin/bash
+sed -i '1s/^pick /$1 /' "\$1"
+EOF
+
+	chmod +x "$seq_editor"
+
+	GIT_SEQUENCE_EDITOR="$seq_editor" \
+		git rebase -i "${sha}^"
+
+	#rm -f "$seq_editor"
 }
 
 # =============================================================================
@@ -220,10 +255,11 @@ function setup_yandex() {
 # GLOBAL SETUP
 setup_history
 setup_readline
-#setup_prompt
+setup_prompt
 setup_ccache
 setup_aliases
 setup_git
+setup_ai
 
 # LOCAL SETUP
 # setup_yandex
@@ -232,4 +268,9 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 
 setup_plugins
 plugin_zsh_syntax_highlightning
+
+
+source ~/.local/bin/artifactory_credentials.sh
+
+[[ ":$PATH:" != *":/home/tlucanti/.cargo/bin:"* ]] && export PATH="/home/tlucanti/.cargo/bin:$PATH"
 
