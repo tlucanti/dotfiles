@@ -26,3 +26,9 @@ if ! [ -e ~/git/nvim ]; then
 	sudo ln -sf ~/git/nvim/squashfs-root/usr/bin/nvim /usr/local/bin/nvim
 	cd ~/git/dotfiles/nvim && ./init.sh
 fi
+
+# font
+if ! [ -e JetBrainsMono.zip ]; then
+	echo DOWNlOAD FONT
+        wget 'https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip'
+fi
