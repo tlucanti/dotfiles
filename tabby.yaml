@@ -1,4 +1,4 @@
-version: 7
+version: 8
 profiles:
   - type: ssh
     name: nuxt
@@ -55,7 +55,8 @@ configSync:
   parts: {}
 hotkeys:
   toggle-window: []
-  copy-current-path: []
+  copy-current-path:
+    - Ctrl-P
   ctrl-c:
     - Ctrl-C
   copy:
@@ -68,16 +69,14 @@ hotkeys:
   clear: []
   zoom-in:
     - Ctrl-=
-    - Ctrl-Shift-=
   zoom-out:
     - Ctrl--
-    - Ctrl-Shift--
   reset-zoom:
     - Ctrl-0
   home:
-    - Home
+    - Alt-Left
   end:
-    - End
+    - Alt-Right
   previous-word:
     - Ctrl-Left
   next-word:
@@ -90,50 +89,45 @@ hotkeys:
     - Ctrl-Delete
   search:
     - Ctrl-Shift-F
-  pane-focus-all:
-    - Ctrl-Shift-I
-  focus-all-tabs:
-    - Ctrl-Alt-Shift-I
+  pane-focus-all: []
+  focus-all-tabs: []
   scroll-to-top:
-    - Ctrl-PageUp
-  scroll-up:
     - Alt-PageUp
+  scroll-up:
+    - Ctrl-Y
   scroll-down:
-    - Alt-PageDown
+    - Ctrl-E
   scroll-to-bottom:
-    - Ctrl-PageDown
+    - Alt-PageDown
   restart-telnet-session: []
-  restart-ssh-session: []
+  restart-ssh-session:
+    - - Ctrl-Shift-R
+      - Ctrl-Shift-R
   launch-winscp: []
   settings-tab: {}
-  settings:
-    - Ctrl-,
-  serial:
-    - Alt-K
+  settings: []
+  serial: []
   restart-serial-session: []
   new-tab:
-    - Ctrl-Shift-T
-  new-window:
-    - Ctrl-Shift-N
-  profile: {}
+    - Ctrl-N
+  new-window: []
+  profile:
+    ssh:custom:nuxt:6d2ee8d8-073e-4ce7-a34b-a3e2534cd631: []
+    local:binbash: []
   profile-selectors: {}
-  close-tab:
-    - Ctrl-Alt-Shift-Q
+  close-tab: []
   reopen-tab:
-    - Ctrl-Shift-Z
+    - Ctrl-Shift-T
   toggle-last-tab: []
-  rename-tab:
-    - Ctrl-Shift-R
+  rename-tab: []
   next-tab:
-    - Ctrl-Shift-Right
     - Ctrl-Tab
   previous-tab:
-    - Ctrl-Shift-Left
     - Ctrl-Shift-Tab
   move-tab-left:
-    - Ctrl-Shift-PageUp
+    - Ctrl-Shift-Left
   move-tab-right:
-    - Ctrl-Shift-PageDown
+    - Ctrl-Shift-Right
   rearrange-panes:
     - Ctrl-Shift
   duplicate-tab: []
@@ -172,20 +166,14 @@ hotkeys:
   tab-18: []
   tab-19: []
   tab-20: []
-  split-right:
-    - Ctrl-Shift-S
   split-bottom:
     - Ctrl-Shift-D
   split-left: []
   split-top: []
-  pane-nav-right:
-    - Ctrl-Alt-Right
-  pane-nav-down:
-    - Ctrl-Alt-Down
-  pane-nav-up:
-    - Ctrl-Alt-Up
-  pane-nav-left:
-    - Ctrl-Alt-Left
+  pane-nav-right: []
+  pane-nav-down: []
+  pane-nav-up: []
+  pane-nav-left: []
   pane-nav-previous:
     - Alt-[
   pane-nav-next:
@@ -201,21 +189,32 @@ hotkeys:
   pane-nav-9: []
   pane-maximize:
     - Ctrl-Alt-Enter
-  pane-increase-vertical: []
-  pane-decrease-vertical: []
-  pane-increase-horizontal: []
-  pane-decrease-horizontal: []
-  close-pane: []
-  switch-profile:
-    - Ctrl-Alt-T
-  profile-selector:
-    - Ctrl-Shift-E
+  pane-increase-horizontal:
+    - Ctrl-Alt-]
+  pane-decrease-horizontal:
+    - Ctrl-Alt-[
+  close-pane:
+    - Ctrl-Alt-Shift-Q
+  switch-profile: []
+  profile-selector: []
   command-selector:
     - Ctrl-Shift-P
-  reconnect-tab: []
   disconnect-tab: []
   toggle-fullscreen:
     - F11
+  scroll-page-up:
+    - Ctrl-PageUp
+  scroll-page-down:
+    - Ctrl-PageDown
+  group-selectors: {}
+  reconnect-tab:
+    - Ctrl-Shift-R
+  split-right:
+    - Ctrl-Shift-S
+  pane-increase-vertical:
+    - Ctrl-Shift-]
+  pane-decrease-vertical:
+    - Ctrl-Shift-[
 terminal:
   searchOptions: {}
   colorScheme:
@@ -240,7 +239,7 @@ terminal:
       - '#ddaaff'
       - '#b7fff9'
       - '#ffffff'
-  font: JetBrainsMono Nerd Font
+  font: JetBrainsMono Nerd Font Mono
   fontWeightBold: 800
   cursor: beam
   linePadding: 1.5
@@ -276,23 +275,29 @@ terminal:
   hideCloseButton: true
   copyAsHTML: false
   hideTabOptionsButton: true
+  wordSeparator: ' ()[]{}''"`'
 ssh:
   knownHosts:
     - host: 194.28.226.165
       port: 22
       type: ecdsa-sha2-nistp256
       digest: 3aK61SoFxWtyRGhsf1n+pr7JyUJqBtC63Lz9kQUiIGM=
+    - host: 82.204.182.121
+      port: 20117
+      type: ssh-rsa
+      digest: moYpdXQZ/6XKFSzWsiW6FtBjLdO16nVZvdcS9V13NxE=
 clickableLinks:
   modifier: ctrlKey
 accessibility: {}
 appearance:
   tabsInFullscreen: true
 hacks: {}
-pluginBlacklist: []
 providerBlacklist: []
 commandBlacklist: []
 profileDefaults:
   ssh:
     disableDynamicTitle: true
 profileBlacklist: []
+enableWelcomeTab: false
+pluginBlacklist: []
 
